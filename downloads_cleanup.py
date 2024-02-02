@@ -27,13 +27,35 @@ def create_folders():
 
 
 # Function to move files to respective folders
-def move_files():
-    pass
+def move_files(folder_name, files):
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+    for file in files:
+        old_path = os.path.join(os.getcwd(), file)
+        new_path = os.path.join(os.getcwd(), folder_name, file)
+        os.rename(old_path, new_path)
+        print(f"Moved: {file} to {folder_name}")
 
 
 # Function to organize files
 def organize_files():
-    pass
+    files = os.listdir(os.getcwd())
+    for file in files:
+        if os.path.isfile(file):
+            file_name, file_extn = os.path.splitext(file)
+            if file_extn in EXTN_AUDIO:
+                move_files('Audio', [file])
+            elif file_extn in EXTN_DOC:
+                move_files('Documents', [file])
+            elif file_extn in EXTN_IMAGE:
+                move_files('Pictures', [file])
+            elif file_extn in EXTN_INSTALLER:
+                move_files('Installers', [file])
+            elif file_extn in EXTN_VIDEO:
+                move_files('Videos', [file])
+            else:
+                move_files('Others', [file])
+    print("Files organized successfully!")
 
 
 # Main function
